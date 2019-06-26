@@ -18,7 +18,7 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import firebaseApp from '~/firebase/app.js'
+  import { firebase, usersCollection } from '~/plugins/firebase'
 
   export default {
     layout: 'protected',
@@ -40,12 +40,16 @@
     },
     methods: {
       readAllUsersFromDB() {
-        var usersRef = firebaseApp.database().ref('/users')
-        usersRef.once('value', (snapshot) => {
-          snapshot.forEach((childSnapshot) => {
-            this.allusers.push(childSnapshot.val())
+        usersCollection
+          .get()
+          .then(docs => {
+            docs.forEach((doc) => {
+              this.allusers.push(doc.data())
+            })
           })
-        })
+          .catch(e => {
+            console.log(error.message)
+          })
       }
     }
   }

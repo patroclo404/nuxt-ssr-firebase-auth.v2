@@ -18,10 +18,10 @@ module.exports = {
   },
   env: {
     FIREBASE: {
-      API_KEY: 'AIzaSyApB_tw8EabiOtZ193fu4VazZbM00jlPBA',
-      DATABASE_NAME: 'fire-tests',
-      PROJECT_ID: 'fire-tests',
-      SENDER_ID: '662037186260'
+      API_KEY: 'AIzaSyCtYmv_6u8gUHZPuxahMR8f0dwYnPZBSDI',
+      PROJECT_ID: 'z-foo-faa',
+      SENDER_ID: '1090830099875',
+      DATABASE_NAME: 'z-foo-faa',
     }
   },
 
@@ -70,7 +70,9 @@ module.exports = {
     }
   },
 
-  plugins: [],
+  plugins: [
+    '@/plugins/firebase',
+  ],
 
   modules: [
     '@nuxtjs/axios'

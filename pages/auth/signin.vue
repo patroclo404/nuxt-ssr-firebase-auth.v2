@@ -19,7 +19,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import firebaseApp, {googleProvider} from '~/firebase/app'
+import { firebase, usersCollection } from '~/plugins/firebase'
 
 export default {
   data () {
@@ -32,22 +32,13 @@ export default {
   methods: {
     ...mapActions('modules/user', [ 'login' ]),
     submit () {
-      firebaseApp.auth().signInWithEmailAndPassword(this.email, this.password).then((firebaseUser) => {
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password).then((firebaseUser) => {
         return this.login(firebaseUser.uid)
       }).then(() => {
         this.$router.push('/protected')
       }).catch((error) => {
         console.log(error.message)
       })
-    },
-    async fbGoogleLogin() {
-      const { user } = await firebaseApp.auth().signInWithPopup(googleProvider)
-      await this.login(user)
-      this.$router.push('/protected')
-    },
-    async fbGoogleLogout() {
-      await this.logout()
-      this.$router.push('/')
     }
   }
 }

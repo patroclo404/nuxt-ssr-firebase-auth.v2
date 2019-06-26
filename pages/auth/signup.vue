@@ -18,7 +18,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import firebaseApp from '~/firebase/app'
+import { firebase, usersCollection } from '~/plugins/firebase'
 
 export default {
   data () {
@@ -31,17 +31,28 @@ export default {
     ...mapActions('modules/user', [ 'login' ]),
     async signUp () {
       try {
-        const firebaseUser = await firebaseApp.auth().createUserWithEmailAndPassword(this.email, this.password)
+        const firebaseUser = await firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
         await this.writeUserData(firebaseUser.uid, firebaseUser.email)
+          .then((a) => {
+            return a
+          })
+          .catch((e) => {
+            console.log(error.message)
+          })
         await this.login(firebaseUser.uid)
         this.$router.push('/protected')
       } catch (error) {
         console.log(error.message)
       }
     },
-    writeUserData (userId, email) {
-      return firebaseApp.database().ref('users/' + userId).set({
+    async writeUserData (userId, email) {
+      return await usersCollection.doc(userId).set({
         email: email
+      }).then((a) => {
+        return a
+      })
+      .catch(e => {
+        console.log(error.message)
       })
     }
   }
